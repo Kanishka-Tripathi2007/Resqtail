@@ -1,0 +1,47 @@
+type User @table {
+  displayName: String!
+  createdAt: Timestamp!
+  userType: String!
+  email: String
+  phoneNumber: String
+  photoUrl: String
+  organizationName: String
+}
+
+type AnimalReport @table {
+  createdAt: Timestamp!
+  latitude: Float!
+  longitude: Float!
+  animalType: String!
+  conditionDescription: String!
+  status: String!
+  photoUrl: String
+  lastSeenAt: Timestamp
+  reporter: User
+}
+
+type RescueOrganization @table {
+  name: String!
+  createdAt: Timestamp!
+  contactEmail: String!
+  contactPhone: String!
+  website: String
+  serviceArea: String
+}
+
+type ReportAssignment @table {
+  assignedAt: Timestamp!
+  status: String!
+  resolvedAt: Timestamp
+  animalReport: AnimalReport
+  rescueOrganization: RescueOrganization
+  assignedToUser: User
+}
+
+type Message @table {
+  createdAt: Timestamp!
+  content: String!
+  photoUrl: String
+  animalReport: AnimalReport
+  sender: User
+}

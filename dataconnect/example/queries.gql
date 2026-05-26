@@ -1,0 +1,47 @@
+mutation CreateUserReport($animalType: String!, $conditionDescription: String!, $latitude: Float!, $longitude: Float!, $photoUrl: String) @auth(level: USER) {
+  animalReport_insert(data: {
+    animalType: $animalType,
+    conditionDescription: $conditionDescription,
+    latitude: $latitude,
+    longitude: $longitude,
+    photoUrl: $photoUrl,
+    status: "Pending",
+    createdAt_expr: "request.time",
+    reporterId_expr: "auth.uid"
+  })
+}
+
+query GetAnimalReportsByUser @auth(level: USER) {
+  animalReports(where: {reporterId: {eq_expr: "auth.uid"}}, orderBy: [{createdAt: DESC}]) {
+    id
+    animalType
+    conditionDescription
+    latitude
+    longitude
+    status
+    createdAt
+    photoUrl
+    lastSeenAt
+  }
+}
+
+query GetAllRescueOrganizations @auth(level: PUBLIC, insecureReason: "This operation is safe to expose to the public") {
+  rescueOrganizations {
+    id
+    name
+    contactEmail
+    contactPhone
+    website
+    serviceArea
+    createdAt
+  }
+}
+
+mutation AssignReportToOrganization($reportId: UUID!, $organizationId: UUID!) @auth(level: USER, insecureReason: "This operation is safe to expose to all logged in users.") {
+  reportAssignment_insert(data: {
+    animalReportId: $reportId,
+    rescueOrganizationId: $organizationId,
+    status: "Assigned",
+    assignedAt_expr: "request.time"
+  })
+}

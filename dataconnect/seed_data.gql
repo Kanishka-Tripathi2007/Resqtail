@@ -1,0 +1,46 @@
+mutation CreateDemoData @transaction @auth(level: USER, insecureReason: "This is seed data and can be populated by any logged in user.") {
+  user1: user_insert(data: {
+    id: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+    displayName: "Alice Smith",
+    createdAt: "2023-01-01T10:00:00Z",
+    userType: "Public"
+  })
+  user2: user_insert(data: {
+    id: "b0eebc99-9c0b-4ef8-bb6d-6bb9bd380a22",
+    displayName: "Bob Johnson",
+    createdAt: "2023-01-02T11:00:00Z",
+    userType: "Volunteer"
+  })
+  organization1: rescueOrganization_insert(data: {
+    id: "c0eebc99-9c0b-4ef8-bb6d-6bb9bd380a33",
+    name: "Happy Paws Rescue",
+    createdAt: "2023-01-03T12:00:00Z",
+    contactEmail: "info@happypaws.org",
+    contactPhone: "555-123-4567"
+  })
+  animalReport1: animalReport_insert(data: {
+    id: "d0eebc99-9c0b-4ef8-bb6d-6bb9bd380a44",
+    createdAt: "2023-01-04T13:00:00Z",
+    latitude: 34.0522,
+    longitude: -118.2437,
+    animalType: "Dog",
+    conditionDescription: "Stray, limping",
+    status: "Reported",
+    reporterId: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+  })
+  reportAssignment1: reportAssignment_insert(data: {
+    id: "e0eebc99-9c0b-4ef8-bb6d-6bb9bd380a55",
+    assignedAt: "2023-01-04T14:00:00Z",
+    status: "Assigned",
+    animalReportId: "d0eebc99-9c0b-4ef8-bb6d-6bb9bd380a44",
+    rescueOrganizationId: "c0eebc99-9c0b-4ef8-bb6d-6bb9bd380a33",
+    assignedToUserId: "b0eebc99-9c0b-4ef8-bb6d-6bb9bd380a22"
+  })
+  message1: message_insert(data: {
+    id: "f0eebc99-9c0b-4ef8-bb6d-6bb9bd380a66",
+    createdAt: "2023-01-04T14:30:00Z",
+    content: "On my way to assess the dog.",
+    animalReportId: "d0eebc99-9c0b-4ef8-bb6d-6bb9bd380a44",
+    senderId: "b0eebc99-9c0b-4ef8-bb6d-6bb9bd380a22"
+  })
+}

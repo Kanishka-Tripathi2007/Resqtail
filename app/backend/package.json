@@ -1,0 +1,29 @@
+{
+  "name": "resqtail-backend",
+  "version": "1.0.0",
+  "main": "server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@dataconnect/generated": "file:src/dataconnect-generated",
+    "cloudinary": "^1.41.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.0",
+    "express": "^4.18.2",
+    "express-mongo-sanitize": "^2.2.0",
+    "express-rate-limit": "^6.7.0",
+    "express-validator": "^7.0.1",
+    "helmet": "^6.0.1",
+    "leaflet": "^1.9.4",
+    "mongoose": "^8.0.0",
+    "multer": "^1.4.5-lts.1",
+    "multer-storage-cloudinary": "^4.0.0",
+    "nodemailer": "^6.9.4",
+    "razorpay": "^2.8.0",
+    "react-leaflet": "^5.0.0",
+    "sharp": "^0.32.1",
+    "xss-clean": "^0.1.1"
+  }
+}

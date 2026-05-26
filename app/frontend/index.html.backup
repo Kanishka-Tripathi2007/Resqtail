@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ResQtail — Every Life Matters | Emergency Animal Rescue Platform</title>
+<meta name="description" content="ResQtail connects you with nearby vets, NGOs, shelters and rescuers across India. Report, rescue, adopt, donate, and get emergency animal help instantly.">
+<meta name="theme-color" content="#0D7C66">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,600;0,900;1,300;1,600&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- Skip to content for accessibility -->
+<a href="#hero" class="skip-link">Skip to main content</a>
+
+<!-- Weather Alert Banner -->
+<div class="weather-banner" id="weatherBanner" role="alert">
+  🌡️ Heatwave Alert in your area — Please keep water bowls outside for street animals today!
+  <button class="close-banner" onclick="document.getElementById('weatherBanner').style.display='none'" aria-label="Close weather alert">✕</button>
+</div>
+
+<!-- NAV -->
+<nav role="navigation" aria-label="Main navigation">
+  <div class="nav-logo">🐾 ResQ<span>tail</span></div>
+  <div class="nav-links">
+    <a href="#sos">SOS</a>
+    <a href="#nearby">Nearby Help</a>
+    <a href="#findbrowser">🔍 Find Nearby</a>
+    <a href="#firstaid">First Aid</a>
+    <a href="#rescue">Rescue</a>
+    <a href="#feeding">Feeding</a>
+    <a href="#donate">Donate</a>
+    <a href="#report">Report</a>
+  </div>
+  <button class="nav-sos" onclick="scrollToSection('sos')" aria-label="Go to emergency SOS section">🆘 Emergency</button>
+</nav>
+
+<!-- HERO -->
+<section id="hero" role="banner">
+  <div class="hero-bg-paws"></div>
+  <div class="hero-blob"></div>
+  <div class="hero-content">
+    <div class="hero-badge">🐾 India's Street Animal Safety Platform</div>
+    <h1>Every life on<br>the <em>street</em><br>matters.</h1>
+    <p class="hero-sub">Report, rescue, adopt, donate, and get emergency animal help across India. ResQtail connects you with vets, NGOs, and rescuers — right when it matters most.</p>
+    <div class="hero-ctas">
+      <button class="btn-emergency" onclick="scrollToSection('sos')" aria-label="Emergency SOS - Go to emergency section">🆘 Emergency SOS</button>
+      <button class="btn-secondary" onclick="scrollToSection('nearby')" aria-label="Find nearby help">🏥 Find Help Nearby</button>
+    </div>
+
+    <!-- Quick Action Cards -->
+    <div class="quick-actions" role="navigation" aria-label="Quick actions">
+      <a href="#report" class="quick-action-card" aria-label="Report an injured animal">
+        <span class="qa-icon">📢</span>
+        <span class="qa-label">Report Animal</span>
+      </a>
+      <a href="#nearby" class="quick-action-card" aria-label="Find nearby vet">
+        <span class="qa-icon">🏥</span>
+        <span class="qa-label">Nearby Vet</span>
+      </a>
+      <a href="#donate" class="quick-action-card" aria-label="Donate to help animals">
+        <span class="qa-icon">💚</span>
+        <span class="qa-label">Donate</span>
+      </a>
+      <a href="#rescue" class="quick-action-card" aria-label="Adopt an animal">
+        <span class="qa-icon">🏠</span>
+        <span class="qa-label">Adopt</span>
+      </a>
+      <a href="#firstaid" class="quick-action-card" aria-label="First aid guide">
+        <span class="qa-icon">🩹</span>
+        <span class="qa-label">First Aid</span>
+      </a>
+      <div class="quick-action-card" onclick="toggleChat()" role="button" tabindex="0" aria-label="Open ResQBot AI assistant">
+        <span class="qa-icon">🤖</span>
+        <span class="qa-label">ResQBot AI</span>
+      </div>
+    </div>
+
+    <div class="hero-animals" aria-hidden="true">
+      <span>🐶</span><span>🐱</span><span>🐮</span><span>🐦</span><span>🐒</span>
+    </div>
+  </div>
+
+  <!-- Trust Section -->
+  <div class="trust-section" style="position:absolute;bottom:40px;left:0;right:0;max-width:1200px;margin:0 auto;padding:0 40px;">
+    <div class="trust-item">
+      <div class="trust-icon">📍</div>
+      <h4>GPS-Enabled Rescue</h4>
+      <p>Auto-detect your location to find the nearest help instantly</p>
+    </div>
+    <div class="trust-item">
+      <div class="trust-icon">✅</div>
+      <h4>Verified Help Network</h4>
+      <p>Real NGOs, vets and shelters verified across India</p>
+    </div>
+    <div class="trust-item">
+      <div class="trust-icon">🔒</div>
+      <h4>Secure Donations</h4>
+      <p>Razorpay-powered payments with receipt confirmation</p>
+    </div>
+    <div class="trust-item">
+      <div class="trust-icon">🤖</div>
+      <h4>AI First-Aid Guidance</h4>
+      <p>Get instant animal care advice from our AI assistant</p>
+    </div>
+  </div>
+</section>
+
+  <!-- LISTING MODAL -->
+  <div class="modal-overlay" id="listingModal">
+    <div class="modal">
+      <h3>📸 Create Adoption Listing</h3>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <input id="listingName" placeholder="Pet name (required)" aria-label="Pet name" />
+        <select id="listingType" aria-label="Species"><option value="">Species *</option><option>Dog</option><option>Cat</option><option>Bird</option><option>Cow</option><option>Other</option></select>
+        <input id="listingBreed" placeholder="Breed (e.g. Indie, Persian, Labrador)" aria-label="Breed" />
+        <input id="listingAge" placeholder="Age (e.g. ~2 years)" aria-label="Age" />
+        <select id="listingSex" aria-label="Sex"><option value="">Sex</option><option>Male</option><option>Female</option><option>Unknown</option></select>
+        <select id="listingVaccination" aria-label="Vaccination status"><option value="Unknown">Vaccination Status</option><option>Vaccinated</option><option>Not Vaccinated</option><option>Partially Vaccinated</option></select>
+        <input id="listingShelter" placeholder="Shelter name (if any)" aria-label="Shelter name" />
+        <input id="listingLocation" placeholder="City / Area" aria-label="Location" />
+        <select id="listingListerType" aria-label="Listed by"><option value="Individual">Listed by</option><option>Individual</option><option>Shelter</option><option>Pet Shop</option></select>
+        <textarea id="listingDesc" placeholder="Short description — personality, health, behavior..." aria-label="Description"></textarea>
+        <input id="listingContact" placeholder="Contact phone / email" aria-label="Contact information" />
+        <input id="listingPhotos" type="file" accept="image/*" multiple aria-label="Upload photos" />
+        <div style="display:flex;gap:8px;">
+          <button class="submit-btn" onclick="submitListing()">Publish</button>
+          <button class="modal-close" onclick="closeListingModal()">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADOPTION INQUIRY MODAL -->
+  <div class="modal-overlay" id="inquiryModal">
+    <div class="modal">
+      <h3>🐾 Adoption Inquiry</h3>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <input type="hidden" id="inquiryListingId" />
+        <p id="inquiryPetName" style="font-weight:700;color:var(--primary-dark);margin-bottom:4px;"></p>
+        <input id="inquiryName" placeholder="Your Name *" aria-label="Your name" />
+        <input id="inquiryEmail" type="email" placeholder="Your Email *" aria-label="Your email" />
+        <input id="inquiryPhone" placeholder="Phone (optional)" aria-label="Phone number" />
+        <textarea id="inquiryMessage" placeholder="Tell us why you'd like to adopt and about your home setup..." aria-label="Message"></textarea>
+        <div style="display:flex;gap:8px;">
+          <button class="submit-btn" onclick="submitInquiry()">Send Inquiry</button>
+          <button class="modal-close" onclick="closeInquiryModal()">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- SOS -->
+<section id="sos" aria-label="Emergency SOS">
+  <div class="container reveal">
+    <div class="sos-grid">
+      <div>
+        <div class="section-label">🚨 Emergency</div>
+        <h2>One tap. Instant help.</h2>
+        <p class="section-sub" style="color:rgba(255,255,255,0.5)">Animal in danger? Don't wait. Press SOS and we'll auto-detect your location and connect you to the nearest help.</p>
+        <button class="sos-main-btn" onclick="triggerSOS()" aria-label="Press SOS to activate emergency alert">
+          🆘 PRESS SOS NOW
+        </button>
+        <p class="sos-microcopy">⚠️ Use only for urgent animal rescue situations</p>
+        <div class="gps-status" id="gpsStatus" aria-live="polite">
+          <span>📍</span> GPS: Waiting for activation
+        </div>
+        <div class="sos-cards">
+          <div class="sos-card" onclick="callNumber('1962')" role="button" tabindex="0" aria-label="Call Animal Welfare Board">
+            <div class="icon">📞</div>
+            <h4>Call NGO</h4>
+            <p>Connect instantly</p>
+          </div>
+          <div class="sos-card" onclick="whatsappShare()" role="button" tabindex="0" aria-label="Share location via WhatsApp">
+            <div class="icon">💬</div>
+            <h4>WhatsApp</h4>
+            <p>Share location</p>
+          </div>
+          <div class="sos-card" onclick="shareLocation()" role="button" tabindex="0" aria-label="Copy live GPS location">
+            <div class="icon">📍</div>
+            <h4>Share Location</h4>
+            <p>Live GPS link</p>
+          </div>
+          <div class="sos-card" onclick="callNumber('1800111565')" role="button" tabindex="0" aria-label="Call Animal Ambulance">
+            <div class="icon">🚑</div>
+            <h4>Animal Ambulance</h4>
+            <p>Emergency transport</p>
+          </div>
+        </div>
+      </div>
+      <div class="sos-info">
+        <p>🇮🇳 National & State Helplines</p>
+        <div class="hotlines">
+          <div class="hotline-item" style="border:1px solid rgba(151,244,217,0.15);">
+            <div>
+              <div class="name">Go Nirvana Foundation – Jaipur</div>
+              <div style="font-size:0.73rem;color:rgba(255,255,255,0.4)">Patrakar Colony · 24×7 Emergency</div>
+            </div>
+            <div class="number">+91 7851-032328</div>
+            <button class="call-btn" onclick="callNumber('7851032328')" aria-label="Call Go Nirvana Foundation">Call</button>
+          </div>
+          <div class="hotline-item" style="border:1px solid rgba(151,244,217,0.15);">
+            <div>
+              <div class="name">Jaipur Animal Welfare Association</div>
+              <div style="font-size:0.73rem;color:rgba(255,255,255,0.4)">Kalwar Road · 10AM–6PM</div>
+            </div>
+            <div class="number">9983904242</div>
+            <button class="call-btn" onclick="callNumber('9983904242')" aria-label="Call JAWA">Call</button>
+          </div>
+          <div class="hotline-item">
+            <div>
+              <div class="name">Animal Welfare Board of India</div>
+            </div>
+            <div class="number">1962</div>
+            <button class="call-btn" onclick="callNumber('1962')" aria-label="Call AWBI">Call</button>
+          </div>
+          <div class="hotline-item">
+            <div>
+              <div class="name">PFA India Helpline</div>
+            </div>
+            <div class="number">1800-111-565</div>
+            <button class="call-btn" onclick="callNumber('1800111565')" aria-label="Call PFA">Call</button>
+          </div>
+          <div class="hotline-item">
+            <div>
+              <div class="name">Friendicoes – Delhi</div>
+            </div>
+            <div class="number">011-2461-1139</div>
+            <button class="call-btn" onclick="callNumber('01124611139')" aria-label="Call Friendicoes">Call</button>
+          </div>
+          <div class="hotline-item">
+            <div>
+              <div class="name">Blue Cross – Chennai</div>
+            </div>
+            <div class="number">044-2235-1550</div>
+            <button class="call-btn" onclick="callNumber('04422351550')" aria-label="Call Blue Cross">Call</button>
+          </div>
+          <div class="hotline-item">
+            <div>
+              <div class="name">SPCA – Mumbai</div>
+            </div>
+            <div class="number">022-2307-8036</div>
+            <button class="call-btn" onclick="callNumber('02223078036')" aria-label="Call SPCA">Call</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NEARBY HELP -->
+<section id="nearby" aria-label="Find nearby help">
+  <div class="container reveal">
+    <div class="section-label">🏥 Find Help</div>
+    <h2>Nearby Vets & Shelters</h2>
+    <p class="section-sub">Filter by animal type and find clinics, shelters, NGOs, and ambulance services near you.</p>
+
+    <div class="map-placeholder" id="mapPlaceholder">
+      <div class="map-pin">📍</div>
+      <p id="locStatusText">Live Location Map</p>
+      <small id="locStatusDetail" style="margin-bottom: 4px">Enable location access to pull actual vets and shelters near you</small>
+      <div id="locAccuracyBar" style="display:none;position:relative;z-index:2;font-size:0.75rem;color:var(--primary);font-weight:600;margin-bottom:4px;"></div>
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:center;margin-top:8px;position:relative;z-index:2;">
+        <label for="radiusSelect" style="font-size:0.85rem;color:var(--text-muted);margin-right:6px;">Radius</label>
+        <select id="radiusSelect" onchange="onRadiusChange()" aria-label="Search radius" style="padding:8px 12px;border-radius:var(--radius);border:1.5px solid var(--surface-dim);font-weight:600;font-family:var(--font);cursor:pointer;background:var(--surface);">
+          <option value="5000">5 km</option>
+          <option value="10000" selected>10 km</option>
+          <option value="25000">25 km</option>
+          <option value="50000">50 km</option>
+        </select>
+        <button onclick="detectLocationAndFetchLive()" id="liveDataBtn" style="background:var(--primary); color:white; border:none; padding:10px 22px; border-radius:var(--radius-full); font-weight:700; cursor:pointer; transition: all 0.3s; display:flex; align-items:center; gap:6px; font-family:var(--font);" aria-label="Scan area for nearby helpers">🛰️ Scan Area for Helpers</button>
+        <button onclick="stopLocationWatch()" id="stopWatchBtn" style="display:none;background:var(--emergency);color:white;border:none;padding:8px 16px;border-radius:var(--radius-full);font-weight:600;cursor:pointer;font-size:0.82rem;font-family:var(--font);" aria-label="Stop location tracking">⏹ Stop Tracking</button>
+      </div>
+    </div>
+
+    <div class="animal-selector" id="animalSelector" role="radiogroup" aria-label="Filter by animal type">
+      <button class="animal-btn active" data-animal="all" onclick="filterAnimal('all', this)" role="radio" aria-checked="true">🐾 All Animals</button>
+      <button class="animal-btn" data-animal="dog" onclick="filterAnimal('dog', this)" role="radio" aria-checked="false">🐶 Dog</button>
+      <button class="animal-btn" data-animal="cat" onclick="filterAnimal('cat', this)" role="radio" aria-checked="false">🐱 Cat</button>
+      <button class="animal-btn" data-animal="cow" onclick="filterAnimal('cow', this)" role="radio" aria-checked="false">🐮 Cow</button>
+      <button class="animal-btn" data-animal="bird" onclick="filterAnimal('bird', this)" role="radio" aria-checked="false">🐦 Bird</button>
+      <button class="animal-btn" data-animal="other" onclick="filterAnimal('other', this)" role="radio" aria-checked="false">🐒 Other</button>
+    </div>
+
+    <div class="nearby-grid" id="nearbyGrid"></div>
+  </div>
+</section>
+
+<!-- FIND NEARBY BROWSER -->
+<section id="findbrowser" aria-label="Search and discover animal services">
+  <div class="container reveal">
+    <div class="section-label">🔍 Search & Discover</div>
+    <h2>Find NGOs, Vets & Animal Hospitals</h2>
+    <p class="section-sub">Search for animal care services near your area — NGOs, veterinary clinics, animal hospitals, and rescue shelters across India.</p>
+
+    <div class="browser-box">
+      <div class="browser-search-bar">
+        <input class="browser-search-input" id="browserSearchInput" placeholder="e.g. animal hospital, NGO, vet clinic..." onkeydown="if(event.key==='Enter') runBrowserSearch()" aria-label="Search for animal care services" />
+        <button class="browser-loc-btn" onclick="autoFillLocation()" aria-label="Use my location">📍 My Location</button>
+        <button class="browser-search-btn" onclick="runBrowserSearch()" aria-label="Search">🔍 Search</button>
+      </div>
+
+      <div class="browser-chips" role="group" aria-label="Quick search categories">
+        <span class="browser-chip active" onclick="setChip(this,'animal NGO near me')" role="button" tabindex="0">🏛️ NGOs</span>
+        <span class="browser-chip" onclick="setChip(this,'veterinary clinic near me')" role="button" tabindex="0">🩺 Vets</span>
+        <span class="browser-chip" onclick="setChip(this,'animal hospital near me')" role="button" tabindex="0">🏥 Animal Hospitals</span>
+        <span class="browser-chip" onclick="setChip(this,'animal shelter near me')" role="button" tabindex="0">🏠 Shelters</span>
+        <span class="browser-chip" onclick="setChip(this,'animal rescue NGO near me')" role="button" tabindex="0">🚑 Rescue</span>
+        <span class="browser-chip" onclick="setChip(this,'pet emergency vet near me')" role="button" tabindex="0">🆘 Emergency Vet</span>
+      </div>
+
+      <div class="browser-status" id="browserStatus">
+        Enter a search above or pick a category to find animal care services near you. 🐾
+      </div>
+      <div class="browser-results" id="browserResults"></div>
+    </div>
+  </div>
+</section>
+
+<!-- FIRST AID -->
+<section id="firstaid" aria-label="Emergency first aid guide">
+  <div class="container reveal">
+    <div class="section-label">🩹 First Aid</div>
+    <h2>Emergency First Aid Guide</h2>
+    <p class="section-sub">Simple steps to stabilize a street animal before professional help arrives. Always contact a vet or NGO after first aid.</p>
+
+    <div class="firstaid-grid" id="firstaidGrid"></div>
+
+    <div class="disclaimer-box" role="alert">
+      <div class="icon">⚠️</div>
+      <p><strong>Important Disclaimer:</strong> All first aid information provided here is temporary and educational only. First aid is never a replacement for professional veterinary care. Always contact a licensed vet or animal NGO immediately after providing first aid. Incorrect handling can worsen injuries.</p>
+    </div>
+  </div>
+</section>
+
+<!-- RESCUE & ADOPTION -->
+<section id="rescue" aria-label="Rescue guide and adoption">
+  <div class="container reveal">
+    <div class="section-label">🏠 Rescue & Adoption</div>
+    <h2>Save a life. Give a home.</h2>
+    <p class="section-sub">Learn how to safely rescue an injured street animal, or open your heart and home to one looking for a family.</p>
+
+    <div class="rescue-tabs" role="tablist">
+      <button class="rescue-tab active" onclick="switchRescueTab('rescue-steps', this)" role="tab" aria-selected="true">🐾 Rescue Guide</button>
+      <button class="rescue-tab" onclick="switchRescueTab('adoption', this)" role="tab" aria-selected="false">❤️ Adopt an Animal</button>
+    </div>
+
+    <div class="rescue-content active" id="rescue-steps" role="tabpanel">
+      <div class="rescue-steps">
+        <div class="rescue-step">
+          <div class="step-num-big">01</div>
+          <h4>Assess the Situation</h4>
+          <p>Stay calm. Don't rush toward the animal. Assess injury level — is it conscious, breathing, bleeding severely? Note the location details.</p>
+        </div>
+        <div class="rescue-step">
+          <div class="step-num-big">02</div>
+          <h4>Call for Professional Help</h4>
+          <p>Call the nearest shelter or NGO BEFORE attempting to move the animal. Describe the injury and location clearly. They will guide you.</p>
+        </div>
+        <div class="rescue-step">
+          <div class="step-num-big">03</div>
+          <h4>Provide Immediate Safety</h4>
+          <p>If safe to do so, keep the animal away from traffic. Use a cardboard box or soft cloth. Avoid sudden movements that may startle it.</p>
+        </div>
+        <div class="rescue-step">
+          <div class="step-num-big">04</div>
+          <h4>Safe Transport</h4>
+          <p>Use a box or blanket as a makeshift stretcher. Support the full body. Keep the animal warm and dark. Drive smoothly and slowly to the vet.</p>
+        </div>
+        <div class="rescue-step">
+          <div class="step-num-big">05</div>
+          <h4>Hand Over to Professionals</h4>
+          <p>Provide all information to the vet — where you found it, estimated age, visible injuries. Follow up if possible to know its status.</p>
+        </div>
+      </div>
+      <div class="dont-list">
+        <h4>❌ What NOT to Do</h4>
+        <ul>
+          <li>Don't pick up a severely injured animal without proper support — you may worsen fractures</li>
+          <li>Don't give any food, water or human medication without vet guidance</li>
+          <li>Don't hold the animal tightly — fear can cause biting or scratching</li>
+          <li>Don't leave a rescued animal unattended near a road</li>
+          <li>Don't delay calling a vet — time is critical for injured animals</li>
+          <li>Don't attempt to set broken bones or dress deep wounds yourself</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="rescue-content" id="adoption" role="tabpanel">
+      <div class="stats-row">
+        <div class="stat"><div class="stat-num">3.5Cr+</div><div class="stat-label">Street dogs in India</div></div>
+        <div class="stat"><div class="stat-num">91%</div><div class="stat-label">Never find a home</div></div>
+        <div class="stat"><div class="stat-num">1 in 7</div><div class="stat-label">People prefer adopted pets</div></div>
+        <div class="stat"><div class="stat-num">0</div><div class="stat-label">Adoption fee at shelters</div></div>
+      </div>
+      <!-- Adoption Filters -->
+      <div class="adoption-filters" style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px;align-items:center;">
+        <select id="adoptFilterSpecies" onchange="filterAdoptions()" aria-label="Filter by species" style="padding:8px 14px;border-radius:var(--radius);border:1.5px solid var(--surface-dim);font-weight:600;font-family:var(--font);background:var(--surface);">
+          <option value="">🐾 All Species</option>
+          <option value="Dog">🐶 Dog</option>
+          <option value="Cat">🐱 Cat</option>
+          <option value="Bird">🐦 Bird</option>
+          <option value="Cow">🐮 Cow</option>
+          <option value="Other">Other</option>
+        </select>
+        <input id="adoptFilterLocation" placeholder="🔍 Filter by location..." oninput="filterAdoptions()" aria-label="Filter by location" style="padding:8px 14px;border-radius:var(--radius);border:1.5px solid var(--surface-dim);font-family:var(--font);min-width:160px;background:var(--surface);" />
+      </div>
+      <div class="adoption-grid" id="adoptionGrid"></div>
+      <div style="margin-top:18px; display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
+        <button class="btn-primary" onclick="openListingModal()">+ Add Listing</button>
+        <span style="color:var(--text-muted); font-size:0.92rem;">Create adoption listings with photos and contact info.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEEDING GUIDE -->
+<section id="feeding" aria-label="Feeding guide for street animals">
+  <div class="container reveal">
+    <div class="section-label">🍖 Care & Feeding</div>
+    <h2>Feeding Guide</h2>
+    <p class="section-sub">Know what to feed (and what not to!) for each type of street animal. Small acts of kindness make a huge difference.</p>
+
+    <div class="feeding-tabs" id="feedingTabs" role="tablist">
+      <button class="feeding-tab active" onclick="switchFeed('dog', this)" role="tab" aria-selected="true">🐶 Dog</button>
+      <button class="feeding-tab" onclick="switchFeed('cat', this)" role="tab" aria-selected="false">🐱 Cat</button>
+      <button class="feeding-tab" onclick="switchFeed('cow', this)" role="tab" aria-selected="false">🐮 Cow</button>
+      <button class="feeding-tab" onclick="switchFeed('bird', this)" role="tab" aria-selected="false">🐦 Bird</button>
+      <button class="feeding-tab" onclick="switchFeed('monkey', this)" role="tab" aria-selected="false">🐒 Monkey</button>
+    </div>
+
+    <div id="feedingDisplay"></div>
+  </div>
+</section>
+
+<!-- DONATE -->
+<section id="donate" aria-label="Donate and support animal welfare">
+  <div class="container reveal">
+    <div class="section-label">🎁 Support</div>
+    <h2>Donate & Support</h2>
+    <p class="section-sub">Every contribution saves lives — choose how you'd like to help and connect directly with verified, trusted Indian animal NGOs.</p>
+
+    <!-- Impact donation cards -->
+    <div class="impact-cards">
+      <div class="impact-card" onclick="setDonationAmount(100);openDonateModal()" role="button" tabindex="0" aria-label="Donate 100 rupees for emergency food">
+        <div class="impact-amount">₹100</div>
+        <div class="impact-desc">Emergency food for 5 animals</div>
+      </div>
+      <div class="impact-card" onclick="setDonationAmount(250);openDonateModal()" role="button" tabindex="0" aria-label="Donate 250 rupees for first aid supplies">
+        <div class="impact-amount">₹250</div>
+        <div class="impact-desc">First aid supplies</div>
+      </div>
+      <div class="impact-card" onclick="setDonationAmount(500);openDonateModal()" role="button" tabindex="0" aria-label="Donate 500 rupees for rescue transport">
+        <div class="impact-amount">₹500</div>
+        <div class="impact-desc">Rescue transport support</div>
+      </div>
+      <div class="impact-card" onclick="openDonateModal()" role="button" tabindex="0" aria-label="Donate a custom amount">
+        <div class="impact-amount">Custom</div>
+        <div class="impact-desc">Choose your own amount</div>
+      </div>
+    </div>
+
+    <div style="background:rgba(151,244,217,0.08);border:1px solid rgba(151,244,217,0.15);border-radius:var(--radius);padding:12px 18px;margin-bottom:28px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+      <span style="font-size:0.82rem;color:rgba(255,255,255,0.6);">🔒 Payments secured by Razorpay · Receipt sent to your email · 80G tax-exempt eligible</span>
+    </div>
+
+    <div class="donate-tabs" id="donateTabs" role="tablist">
+      <button class="donate-tab active" onclick="switchDonateTab('money', this)" role="tab" aria-selected="true">💰 Donate Money</button>
+      <button class="donate-tab" onclick="switchDonateTab('items', this)" role="tab" aria-selected="false">🍚 Food & Items</button>
+      <button class="donate-tab" onclick="switchDonateTab('volunteer', this)" role="tab" aria-selected="false">🙋 Volunteer</button>
+    </div>
+
+    <!-- Money Panel -->
+    <div class="donate-panel active" id="donate-money" role="tabpanel">
+      <p class="donate-panel-desc">Fund medical treatments, surgeries, vaccinations, and emergency rescue. All listed NGOs are legitimate registered organizations.</p>
+      <div style="margin:12px 0; display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
+        <button class="btn-primary" onclick="openDonateModal()" style="background:var(--primary);">💳 Donate via Card / UPI</button>
+        <span style="color:rgba(255,255,255,0.45); font-size:0.88rem;">Or choose one of the NGOs below to donate directly via UPI or website.</span>
+      </div>
+      <div class="ngo-donate-grid">
+        <div class="ngo-donate-card">
+          <div class="ngo-dc-header"><span class="ngo-dc-icon">🐾</span><div><h4>Go Nirvana Foundation</h4><span class="ngo-tag">✅ Registered NGO · Jaipur</span></div></div>
+          <p>Emergency rescue, surgeries, sterilization & shelter for street animals. Run by dedicated volunteers 24×7.</p>
+          <div class="ngo-dc-contact"><span>📞 +91 7851-032328</span><span>📧 contact@gonirvana.org</span></div>
+          <div class="ngo-dc-actions">
+            <button class="ngo-btn-upi" onclick="openUPIDonate('gonirvana@upi', 'Go Nirvana Foundation')">💳 Donate via UPI</button>
+            <button class="ngo-btn-web" onclick="window.open('https://gonirvana.org','_blank')">🌐 Website</button>
+          </div>
+        </div>
+        <div class="ngo-donate-card">
+          <div class="ngo-dc-header"><span class="ngo-dc-icon">🐕</span><div><h4>Jaipur Animal Welfare Assoc.</h4><span class="ngo-tag">✅ Registered NGO · Jaipur</span></div></div>
+          <p>Vaccinations, sterilizations, injury care and advocacy for humane treatment of animals across Jaipur.</p>
+          <div class="ngo-dc-contact"><span>📞 9983904242</span><span>📧 jaipuranimalwelfareassociation@gmail.com</span></div>
+          <div class="ngo-dc-actions">
+            <button class="ngo-btn-upi" onclick="openUPIDonate('jawa@upi', 'JAWA Jaipur')">💳 Donate via UPI</button>
+            <button class="ngo-btn-web" onclick="callNumber('9983904242')">📞 Call to Donate</button>
+          </div>
+        </div>
+        <div class="ngo-donate-card">
+          <div class="ngo-dc-header"><span class="ngo-dc-icon">🐾</span><div><h4>Friendicoes SECA</h4><span class="ngo-tag">✅ National NGO · Delhi</span></div></div>
+          <p>One of India's oldest animal welfare organizations. Rescue, adoption and sterilization across Delhi NCR since 1979.</p>
+          <div class="ngo-dc-contact"><span>📞 011-2461-1139</span><span>📧 friendicoes@gmail.com</span></div>
+          <div class="ngo-dc-actions">
+            <button class="ngo-btn-upi" onclick="window.open('https://www.friendicoes.org/donate','_blank')">💳 Donate Online</button>
+            <button class="ngo-btn-web" onclick="window.open('https://www.friendicoes.org','_blank')">🌐 Website</button>
+          </div>
+        </div>
+        <div class="ngo-donate-card">
+          <div class="ngo-dc-header"><span class="ngo-dc-icon">🐕‍🦺</span><div><h4>People for Animals (PFA)</h4><span class="ngo-tag">✅ National NGO · Pan-India</span></div></div>
+          <p>Founded by Maneka Gandhi. Largest animal welfare NGO in India with 26-state presence running hospitals & rescue centers.</p>
+          <div class="ngo-dc-contact"><span>📞 1800-111-565 (Toll-free)</span><span>📧 pfa@pfaindia.com</span></div>
+          <div class="ngo-dc-actions">
+            <button class="ngo-btn-upi" onclick="window.open('https://www.pfaindia.com/donate','_blank')">💳 Donate Online</button>
+            <button class="ngo-btn-web" onclick="window.open('https://www.pfaindia.com','_blank')">🌐 Website</button>
+          </div>
+        </div>
+        <div class="ngo-donate-card">
+          <div class="ngo-dc-header"><span class="ngo-dc-icon">🐈</span><div><h4>Blue Cross of India</h4><span class="ngo-tag">✅ Trusted NGO · Chennai</span></div></div>
+          <p>Running since 1959. Veterinary care, sterilization drives, cruelty prevention and adoption center in Chennai.</p>
+          <div class="ngo-dc-contact"><span>📞 044-2235-1550</span><span>📧 bluecross@vsnl.com</span></div>
+          <div class="ngo-dc-actions">
+            <button class="ngo-btn-upi" onclick="window.open('https://www.bluecrossofindia.org/donate','_blank')">💳 Donate Online</button>
+            <button class="ngo-btn-web" onclick="window.open('https://www.bluecrossofindia.org','_blank')">🌐 Website</button>
+          </div>
+        </div>
+        <div class="ngo-donate-card">
+          <div class="ngo-dc-header"><span class="ngo-dc-icon">🐦</span><div><h4>Wildlife SOS India</h4><span class="ngo-tag">✅ National NGO · Pan-India</span></div></div>
+          <p>Rescuing wildlife from cruelty, habitat loss and conflict. Runs bear, elephant and leopard rescue programs nationally.</p>
+          <div class="ngo-dc-contact"><span>📞 011-4153-4273</span><span>📧 info@wildlifesos.org</span></div>
+          <div class="ngo-dc-actions">
+            <button class="ngo-btn-upi" onclick="window.open('https://wildlifesos.org/donate','_blank')">💳 Donate Online</button>
+            <button class="ngo-btn-web" onclick="window.open('https://wildlifesos.org','_blank')">🌐 Website</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Items Panel -->
+    <div class="donate-panel" id="donate-items" role="tabpanel">
+      <div class="donate-loc-bar" id="itemsLocBar">
+        <div class="donate-loc-bar-left">
+          <span class="donate-loc-icon">📍</span>
+          <div>
+            <strong>Find Real Drop-off Points Near You</strong>
+            <span>Scan your area for actual nearby vets, NGOs and shelters accepting donations right now</span>
+          </div>
+        </div>
+        <button class="donate-loc-btn" id="itemsLocBtn" onclick="scanNearbyDonation('items')" aria-label="Scan my area for donation drop-off points">🛰️ Scan My Area</button>
+      </div>
+      <div id="itemsLiveResults"></div>
+      <p class="donate-panel-desc">Drop off food, medicines and supplies at these verified centres. Every item helps keep street animals fed, healthy and cared for.</p>
+      <div class="items-what-grid">
+        <div class="items-col">
+          <h4>🐶 For Dogs & Cats</h4>
+          <ul>
+            <li>✅ Dry dog/cat food (Pedigree, Royal Canin)</li>
+            <li>✅ Plain boiled rice & chicken</li>
+            <li>✅ Stainless steel water/food bowls</li>
+            <li>✅ Old blankets, cotton towels</li>
+            <li>✅ Puppy milk replacer</li>
+            <li>✅ Dewormers, Tick sprays</li>
+            <li>✅ Collars & leashes</li>
+            <li>✅ Carrier cages for transport</li>
+          </ul>
+        </div>
+        <div class="items-col">
+          <h4>🐮 For Cows & Birds</h4>
+          <ul>
+            <li>✅ Hay, grass fodder, jaggery</li>
+            <li>✅ Grains: wheat, corn, barley</li>
+            <li>✅ Mineral salt blocks for cows</li>
+            <li>✅ Millet, sunflower seeds (for birds)</li>
+            <li>✅ Large water troughs</li>
+            <li>✅ Antiseptic wound spray</li>
+            <li>✅ Old mattresses / sacks for bedding</li>
+          </ul>
+        </div>
+      </div>
+      <h4 style="margin: 28px 0 16px; color: rgba(255,255,255,0.85); font-weight: 700;">📍 Verified Drop-off Points</h4>
+      <div class="dropoff-grid">
+        <div class="dropoff-card">
+          <h5>🐾 Go Nirvana Foundation</h5>
+          <p>Near Alpha Bal Academy, Patrakar Colony, Jaipur</p>
+          <span>📞 +91 7851-032328</span>
+          <span>🕐 9AM – 8PM | Emergency 24×7</span>
+          <button class="ngo-btn-web" onclick="window.open('https://maps.app.goo.gl/M1qXbo8a1fJGgD2o6','_blank')">🗺️ Get Directions</button>
+        </div>
+        <div class="dropoff-card">
+          <h5>🐕 Jaipur Animal Welfare Assoc.</h5>
+          <p>Jiloi Village, Kalwar Road, Jaipur</p>
+          <span>📞 9983904242</span>
+          <span>🕐 10AM – 6PM</span>
+          <button class="ngo-btn-web" onclick="window.open('https://share.google/mkFvx5NJgaN42b9zW','_blank')">🗺️ Get Directions</button>
+        </div>
+        <div class="dropoff-card">
+          <h5>🐈 Friendicoes SECA — Delhi</h5>
+          <p>Siri Fort Institutional Area, Delhi — 110049</p>
+          <span>📞 011-2461-1139</span>
+          <span>🕐 10AM – 5PM (Mon–Sat)</span>
+          <button class="ngo-btn-web" onclick="window.open('https://maps.google.com/?q=Friendicoes+SECA+Delhi','_blank')">🗺️ Get Directions</button>
+        </div>
+        <div class="dropoff-card">
+          <h5>🐕‍🦺 PFA — Find Your Nearest</h5>
+          <p>People for Animals has 25+ chapters across India. Find your closest branch online.</p>
+          <span>📞 1800-111-565 (Free)</span>
+          <button class="ngo-btn-web" onclick="window.open('https://www.pfaindia.com/chapters','_blank')">🔍 Find Nearest Chapter</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Volunteer Panel -->
+    <div class="donate-panel" id="donate-volunteer" role="tabpanel">
+      <p class="donate-panel-desc">Your time and skills are the most valuable contribution. Join a growing community of passionate animal rescuers across India.</p>
+      <div class="volunteer-roles-grid">
+        <div class="vol-role-card"><div class="vol-role-icon">🏠</div><h5>Foster a Rescued Animal</h5><p>Temporarily house a rescued animal until it finds a permanent home. Training & support provided by NGOs.</p></div>
+        <div class="vol-role-card"><div class="vol-role-icon">🍖</div><h5>Join Feeding Drives</h5><p>Participate in weekend colony feeding programmes. Feed 50–200 street animals with fellow volunteers.</p></div>
+        <div class="vol-role-card"><div class="vol-role-icon">📢</div><h5>Awareness & Social Media</h5><p>Share rescue stories, create content, run fundraising campaigns and educate your community.</p></div>
+        <div class="vol-role-card"><div class="vol-role-icon">🩺</div><h5>Medical Support (Vets/Students)</h5><p>Assist in treatment camps, sterilization drives, and first-aid workshops for vet students and professionals.</p></div>
+        <div class="vol-role-card"><div class="vol-role-icon">🚗</div><h5>Transport & Rescue Runs</h5><p>Use your vehicle to transport injured animals to clinics or shelters. Even 1 hour a week makes a difference.</p></div>
+        <div class="vol-role-card"><div class="vol-role-icon">💻</div><h5>Tech & Creative Skills</h5><p>Help build websites, apps or design materials for NGOs that desperately need digital support.</p></div>
+      </div>
+      <h4 style="margin: 32px 0 16px; color: rgba(255,255,255,0.85); font-weight:700;">📋 Register with a Verified NGO Nearby</h4>
+      <div class="donate-loc-bar" id="volLocBar">
+        <div class="donate-loc-bar-left">
+          <span class="donate-loc-icon">📍</span>
+          <div>
+            <strong>Find NGOs Accepting Volunteers Near You</strong>
+            <span>We'll locate shelters and animal welfare centres in your area</span>
+          </div>
+        </div>
+        <button class="donate-loc-btn" id="volLocBtn" onclick="scanNearbyDonation('volunteer')" aria-label="Scan my area for volunteer opportunities">🛰️ Scan My Area</button>
+      </div>
+      <div id="volLiveResults"></div>
+      <div class="vol-ngo-list">
+        <div class="vol-ngo-item"><div><strong>Go Nirvana Foundation – Jaipur</strong><span>Emergency Rescue · Feeding Drives · Foster Program</span></div><button class="ngo-btn-upi" onclick="window.open('mailto:contact@gonirvana.org?subject=Volunteer Application&body=Hi! I would like to volunteer with Go Nirvana Foundation.')">✉️ Apply via Email</button></div>
+        <div class="vol-ngo-item"><div><strong>People for Animals (PFA) – Pan India</strong><span>Medical Camps · Rescue · 25+ Chapters Across India</span></div><button class="ngo-btn-upi" onclick="window.open('https://www.pfaindia.com/volunteer','_blank')">🌐 Apply Online</button></div>
+        <div class="vol-ngo-item"><div><strong>Friendicoes SECA – Delhi</strong><span>Rescue · Adoption Coordination · Shelter Management</span></div><button class="ngo-btn-upi" onclick="window.open('mailto:friendicoes@gmail.com?subject=Volunteer Application&body=Hi! I would like to volunteer with Friendicoes.')">✉️ Apply via Email</button></div>
+        <div class="vol-ngo-item"><div><strong>Wildlife SOS – Pan India</strong><span>Wildlife Rescue · Research · Education Outreach</span></div><button class="ngo-btn-upi" onclick="window.open('https://wildlifesos.org/volunteer','_blank')">🌐 Apply Online</button></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- REPORT -->
+<section id="report" aria-label="Report an injured animal">
+  <div class="container reveal">
+    <div class="section-label">📢 Report</div>
+    <h2>Report an Animal in Need</h2>
+    <p class="section-sub">See an injured or distressed animal? Report it and our network of NGOs and volunteers will respond.</p>
+    <div class="report-form">
+      <!-- Step progress indicator -->
+      <div class="report-progress" aria-label="Report form progress">
+        <div class="report-step active">
+          <div class="report-step-num">1</div>
+          <div class="report-step-line"></div>
+        </div>
+        <div class="report-step">
+          <div class="report-step-num">2</div>
+          <div class="report-step-line"></div>
+        </div>
+        <div class="report-step">
+          <div class="report-step-num">3</div>
+          <div class="report-step-line"></div>
+        </div>
+        <div class="report-step">
+          <div class="report-step-num">4</div>
+          <div class="report-step-line"></div>
+        </div>
+        <div class="report-step">
+          <div class="report-step-num">5</div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="reportAnimal">Animal Type *</label>
+          <select id="reportAnimal" aria-required="true">
+            <option value="">Select Animal</option>
+            <option>🐶 Dog</option>
+            <option>🐱 Cat</option>
+            <option>🐮 Cow</option>
+            <option>🐦 Bird</option>
+            <option>🐒 Monkey</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="reportUrgency">Urgency Level *</label>
+          <select id="reportUrgency" aria-required="true">
+            <option value="">Select Level</option>
+            <option>🔴 Critical – Needs immediate help</option>
+            <option>🟠 Moderate – Injured but stable</option>
+            <option>🟡 Low – Stray, needs shelter</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="reportLocation">Location / Address *</label>
+        <input type="text" id="reportLocation" placeholder="Enter address or click to auto-detect..." onclick="autoFillReportLocation()" aria-required="true" />
+        <span class="helper-text">Click the field to auto-detect your GPS location</span>
+        <input type="hidden" id="reportLat" />
+        <input type="hidden" id="reportLng" />
+      </div>
+      <div class="form-group">
+        <label for="reportDesc">Description</label>
+        <textarea id="reportDesc" placeholder="Describe the animal's condition, what happened, any visible injuries..."></textarea>
+      </div>
+      <div class="form-group">
+        <label for="photoUpload">Upload Photo</label>
+        <div class="upload-zone" onclick="document.getElementById('photoUpload').click()" role="button" tabindex="0" aria-label="Click to upload a photo">
+          <div class="icon">📷</div>
+          <p>Click to upload a photo of the animal</p>
+          <span class="helper-text" style="display:block;margin-top:6px;">Upload a clear photo if it is safe to do so</span>
+          <input type="file" id="photoUpload" accept="image/*" style="display:none" onchange="handlePhotoUpload(this)" aria-label="Photo file input" />
+        </div>
+        <div id="photoPreview" class="photo-preview" style="display:none;"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="reportName">Your Name (optional)</label>
+          <input type="text" id="reportName" placeholder="Name" />
+        </div>
+        <div class="form-group">
+          <label for="reportEmail">Your Email (optional)</label>
+          <input type="email" id="reportEmail" placeholder="Email" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="reportContact">Your Contact Phone (optional)</label>
+        <input type="text" id="reportContact" placeholder="Phone or WhatsApp number" />
+      </div>
+      <button class="submit-btn" onclick="submitReport()" aria-label="Submit report to nearby NGOs and volunteers">📢 Submit Report to Nearby NGOs & Volunteers</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer role="contentinfo">
+  <div class="footer-logo">🐾 ResQtail</div>
+  <p>A platform built with love for India's street animals. Every tap you make could save a life. Together, we make streets safer for all beings.</p>
+  <div class="footer-links">
+    <a href="#sos">Emergency SOS</a>
+    <a href="#nearby">Nearby Help</a>
+    <a href="#findbrowser">Find Nearby</a>
+    <a href="#firstaid">First Aid</a>
+    <a href="#rescue">Rescue</a>
+    <a href="#feeding">Feeding Guide</a>
+    <a href="#donate">Donate</a>
+    <a href="#report">Report</a>
+  </div>
+  <div class="footer-bottom">
+    © 2025 ResQtail. Built for good. All animal helplines are publicly available numbers.
+  </div>
+</footer>
+
+<!-- CHATBOT -->
+<button class="chat-trigger" onclick="toggleChat()" aria-label="Open ResQBot AI assistant">🐾</button>
+<div class="chat-window" id="chatWindow" role="dialog" aria-label="ResQBot AI chat">
+  <div class="chat-header">
+    <div class="chat-avatar">🐾</div>
+    <div class="chat-header-info">
+      <h4>ResQBot</h4>
+      <p>Street Animal AI Assistant</p>
+    </div>
+    <div class="chat-status">
+      <div class="chat-dot"></div>
+      <span>Online</span>
+    </div>
+    <button class="close-chat" onclick="toggleChat()" aria-label="Close chat">✕</button>
+  </div>
+  <div class="chat-messages" id="chatMessages">
+    <div class="msg bot">
+      <div class="msg-avatar">🐾</div>
+      <div>
+        <div class="msg-bubble">
+          Hi! I'm ResQBot 🐾 I'm here to help you with street animal care, first aid, nearby vets, and more. How can I help today?
+        </div>
+        <div class="chat-quick-btns">
+          <button class="quick-btn" onclick="sendQuickMsg('Dog hit by vehicle — what to do?')">🚗 Dog hit by vehicle</button>
+          <button class="quick-btn" onclick="sendQuickMsg('First aid for injured bird')">🐦 Injured bird</button>
+          <button class="quick-btn" onclick="sendQuickMsg('Abandoned puppy care tips')">🐶 Abandoned puppy</button>
+          <button class="quick-btn" onclick="sendQuickMsg('How to treat a cow wound')">🐮 Cow wound care</button>
+          <button class="quick-btn" onclick="sendQuickMsg('What not to feed cats')">🐱 Cat food safety</button>
+          <button class="quick-btn" onclick="sendQuickMsg('Find nearby vet')">🏥 Find vet</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="chat-disclaimer" role="note">
+    ⚠️ AI advice is not a replacement for a veterinarian. Contact a vet or rescuer in emergencies.
+  </div>
+  <div class="chat-input-area">
+    <input class="chat-input" id="chatInput" placeholder="Ask about any street animal..." onkeydown="if(event.key==='Enter') sendChat()" aria-label="Type your message to ResQBot" />
+    <button class="chat-send" onclick="sendChat()" aria-label="Send message">➤</button>
+  </div>
+</div>
+
+<!-- FLOATING SOS FAB (Mobile) -->
+<button class="sos-fab" onclick="triggerSOS()" aria-label="Emergency SOS">🆘</button>
+
+<!-- MOBILE BOTTOM NAV -->
+<div class="mobile-bottom-nav" role="navigation" aria-label="Mobile navigation">
+  <div class="mobile-bottom-nav-inner">
+    <button class="mobile-nav-item sos-item" onclick="scrollToSection('sos')">
+      <span class="nav-icon">🆘</span>
+      SOS
+    </button>
+    <a href="#nearby" class="mobile-nav-item">
+      <span class="nav-icon">🏥</span>
+      Help
+    </a>
+    <a href="#report" class="mobile-nav-item">
+      <span class="nav-icon">📢</span>
+      Report
+    </a>
+    <a href="#donate" class="mobile-nav-item">
+      <span class="nav-icon">💚</span>
+      Donate
+    </a>
+    <button class="mobile-nav-item" onclick="toggleChat()">
+      <span class="nav-icon">🤖</span>
+      ResQBot
+    </button>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <h3 id="modalTitle"></h3>
+    <p id="modalBody"></p>
+    <button class="modal-close" onclick="closeModal()">Got it ✓</button>
+  </div>
+</div>
+
+<!-- DONATION MODAL -->
+<div class="modal-overlay" id="donationModal">
+  <div class="modal">
+    <h3>💳 Donate to ResQtail</h3>
+    <div id="donationBody" style="display:flex;flex-direction:column;gap:8px;">
+      <label for="donationNgo">NGO</label>
+      <select id="donationNgo" aria-label="Select NGO">
+        <option>Go Nirvana Foundation</option>
+        <option>Jaipur Animal Welfare Association</option>
+        <option>Friendicoes SECA</option>
+        <option>People for Animals (PFA)</option>
+        <option>Blue Cross of India</option>
+        <option>Wildlife SOS India</option>
+        <option>ResQtail General Fund</option>
+      </select>
+      <label for="donationAmount">Amount (INR)</label>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <button type="button" class="quick-amount" onclick="setDonationAmount(100)">₹100</button>
+        <button type="button" class="quick-amount" onclick="setDonationAmount(500)">₹500</button>
+        <button type="button" class="quick-amount" onclick="setDonationAmount(1000)">₹1000</button>
+        <button type="button" class="quick-amount" onclick="setDonationAmount(2500)">₹2500</button>
+      </div>
+      <input id="donationAmount" type="number" min="1" value="100" aria-label="Donation amount" />
+      <label for="donationName">Name (optional)</label>
+      <input id="donationName" type="text" aria-label="Donor name" />
+      <label for="donationEmail">Email (optional)</label>
+      <input id="donationEmail" type="email" aria-label="Donor email" />
+      <label for="donationPhone">Phone (optional)</label>
+      <input id="donationPhone" type="text" aria-label="Donor phone" />
+      <label for="donationMessage">Message (optional)</label>
+      <textarea id="donationMessage" placeholder="Leave a kind message for the NGO..." rows="2" aria-label="Message for NGO"></textarea>
+      <div style="display:flex;gap:10px;margin-top:8px;">
+        <button class="submit-btn" onclick="startDonation()">💳 Donate Now</button>
+        <button class="modal-close" onclick="closeDonationModal()">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOASTS -->
+<div id="toastContainer" aria-live="polite" aria-atomic="true" class="toast-container"></div>
+
+<!-- Razorpay checkout -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<script src="app.js"></script>
+<script src="nearby.js"></script>
+</body>
+</html>
